@@ -1,0 +1,15 @@
+{
+  "type": "ecmascript",
+  "apiversion": 1,
+  "id": "testsouthpark",
+  "file": "southpark.js",
+  "showtimeVersion": "4.10",
+  "version": "0.1",
+  "author": "gordon--",
+  "title": "South Park",
+  "synopsis": "Watch all South Park episodes",
+  "description": "The South Park Plugin allows you to watch all South Park episodes via an MTV API. (Used by the official Android App too so it's not warez, don't panic!)",
+  "icon": "southpark.png",
+  "category": "video",
+  "homepage": "techcat.de"
+}

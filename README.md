@@ -1,15 +1,25 @@
 # South Park Movian Plugin
 
-This Plugin makes it possible to view every South Park episode in Movian.
+This plugin makes it possible to view every South Park episode in Movian.
 
-This Plugin uses the same API that is used by the official Android App, so if you're interested how it works feel free to take a look ;)
+This plugin uses the same API that is used by the official Android app, so if you're interested how it works feel free to take a look ;)
 
 
-Currently the text language is german but the episodes are offered for now in the following languages (depending on episode):
+The follwing audio languages are offered (depending on episode), descriptions are available in many other languages:
  - German
  - English
  - Polish
  - French
 
 
-In the next version it will be possible to choose the text language too and probably there will be some more audio languages. (There are two API-Keys for different locations i didn't tried yet)
+## Installation
+This plugin is not available via the official plugin source yet, so you have to install it manually.
+
+### PlayStation 3:
+ZIP the source files and upload the file to "/dev_hdd0/game/HTSS00003/USRDIR/settings/installedplugins/"
+
+### Linux:
+ZIP the source files and copy the file to "~/.hts/showtime/installedplugins/"
+
+### Android:
+ZIP the source files and copy the file to "/data/data/com.lonelycoder.mediaplayer/files/installedplugins/"

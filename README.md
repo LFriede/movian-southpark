@@ -5,7 +5,7 @@ This plugin makes it possible to view every South Park episode in Movian.
 This plugin uses the same API that is used by the official Android app, so if you're interested how it works feel free to take a look ;)
 
 
-The follwing audio languages are offered (depending on episode), descriptions are available in many other languages:
+The following audio languages are offered (depending on episode), descriptions are available in many other languages:
  - German
  - English
  - Polish

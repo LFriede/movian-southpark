@@ -45,7 +45,7 @@
           if (data[i].local_playlists[i2].local_playlist_context_identifier) {
             titel += " "+data[i].local_playlists[i2].local_playlist_context_identifier;
           }
-          page.appendItem(PREFIX+":play:"+data[i].local_playlists[i2].id+":"+data[i].local_playlists[i2].language_code+":"+encodeURIComponent(data[i].original_title), "video", {title: titel, icon: ImageId(data[i].image.riptide_image_id), description: new showtime.RichText(data[i].local_long_description+'<br><br><br><font color="FFB000">Originaltitel: </font>'+data[i].original_title)});
+          page.appendItem(PREFIX+":play:"+data[i].local_playlists[i2].id+":"+data[i].local_playlists[i2].language_code+":"+encodeURIComponent(data[i].original_title), "video", {title: titel, icon: ImageId(data[i].image.riptide_image_id), description: new showtime.RichText(data[i].local_long_description+'<br><br><br><font color="FFB000">Original title: </font>'+data[i].original_title)});
         }
       }
     }

@@ -4,11 +4,11 @@
   "id": "southpark",
   "file": "southpark.js",
   "showtimeVersion": "4.10",
-  "version": "0.2",
+  "version": "0.3",
   "author": "gordon--",
   "title": "South Park",
   "synopsis": "Watch all South Park episodes",
-  "description": "The South Park Plugin allows you to watch all South Park episodes via an MTV API.\n\nIf there are any issues, ideas, wishes etc. visit this project on GitHub:\nhttps://github.com/LFriede/movian-southpark",
+  "description": "The South Park plugin allows you to watch all South Park episodes via an MTV API.\n\nIf there are any issues, ideas, wishes etc. visit this project on GitHub:\nhttps://github.com/LFriede/movian-southpark",
   "icon": "southpark.png",
   "category": "video",
   "homepage": "techcat.de"

@@ -8,7 +8,7 @@
   "author": "gordon--",
   "title": "South Park",
   "synopsis": "Watch all South Park episodes",
-  "description": "The South Park plugin allows you to watch all South Park episodes via an MTV API.\n\nIf there are any issues, ideas, wishes etc. visit this project on GitHub:\nhttps://github.com/LFriede/movian-southpark",
+  "description": "The South Park plugin allows you to watch all South Park episodes via an MTV API.\n\nThe following audio languages are offered (depending on episode), descriptions are available in many other languages:\n - German\n - English\n - Polish\n - French\n\nIf there are any issues, ideas, wishes etc. visit this project on GitHub:\nhttps://github.com/LFriede/movian-southpark",
   "icon": "southpark.png",
   "category": "video",
   "homepage": "techcat.de"

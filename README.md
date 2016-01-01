@@ -14,14 +14,6 @@ The following audio languages are offered (depending on episode), descriptions a
 
 ## Installation
 This plugin is available via the official plugin source, so just start Movian and go to the "available plugins" menu.
-However, if you want to install the plugin manually just follow these instructions:
+However, if you want to install the plugin manually just "play" the zip file with Movian and it will be installed.
 
-### PlayStation 3:
-ZIP the source files and copy the file to "/dev_hdd0/game/HTSS00003/USRDIR/settings/installedplugins/"
-
-### Linux:
-ZIP the source files and copy the file to "~/.hts/showtime/installedplugins/"
-
-### Android:
-With root: ZIP the source files and copy the file to "/data/data/com.lonelycoder.mediaplayer/files/installedplugins/"
-Without root: Just "play" the zip file with Movian and it will be installed.
+If you are developing its easier to use the -p command line argument of Movian followed by the path of the folder containing the plugin data.

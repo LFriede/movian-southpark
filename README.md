@@ -16,4 +16,4 @@ The following audio languages are offered (depending on episode), descriptions a
 This plugin is available via the official plugin source, so just start Movian and go to the "available plugins" menu.
 However, if you want to install the plugin manually just "play" the zip file with Movian and it will be installed.
 
-If you are developing its easier to use the -p command line argument of Movian followed by the path of the folder containing the plugin data.
+If you are developing it's easier to use the -p command line argument of Movian followed by the path of the folder containing the plugin data.

@@ -6,9 +6,13 @@
 
   // Select language via the geoip feature of the API
   if (language == undefined) {
-    var data = JSON.parse(showtime.httpReq("http://www.mtvunderthethumb.com/api/v2/utt_info/countrycode").toString());
-    if (data.countryCode) {
-      language = data.countryCode;
+    try {
+      var data = JSON.parse(showtime.httpReq("http://www.mtvunderthethumb.com/api/v2/utt_info/countrycode").toString());
+      if (data.countryCode) {
+        language = data.countryCode;
+      }
+    } catch(err) {
+      language = "EN";
     }
   }
 

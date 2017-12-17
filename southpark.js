@@ -28,6 +28,7 @@
       translation.push('Absteigend');
       translation.push('Neuste Episode');
       translation.push('Staffeln');
+      translation.push('Zufällige Episode');
       break;
     default:
       var translation = new Array();
@@ -39,12 +40,14 @@
       translation.push('Descending');
       translation.push('Latest episode');
       translation.push('Seasons');
+      translation.push('Random episode');
   }
 
   plugin.addURI(PREFIX+":main", mainPage);
   plugin.addURI(PREFIX+":staffel:(.*)", episodenPage);
   plugin.addURI(PREFIX+":lang:(.*):(.*)", selectLanguage);
   plugin.addURI(PREFIX+":play:(.*):(.*):(.*)", playEpisode);
+  plugin.addURI(PREFIX+":random", pickRandom);
   plugin.createService("South Park", PREFIX+":main", "video", true, plugin.path + "southpark.png");
 
   function ImageId(id) {
@@ -68,6 +71,26 @@
           descr = data[i].local_short_description;
         }
         return descr;
+      }
+    }
+  }
+
+  // Pick random episode
+  function pickRandom(page) {
+    var data = JSON.parse(showtime.httpReq("https://api.mtvnn.com/v2/site/z9pce5mcsm/"+language+"/franchises/471/Shows/seasons.json").toString());
+
+    var randomEpisode = 0;
+    for (var i in data) {
+      randomEpisode += data[i].published_episode_count;
+    }
+    var randomEpisode = Math.floor(Math.random() * (randomEpisode + 1));
+    var randomSeason = 0;
+
+    for (var i in data) {
+      if (randomEpisode > data[i].published_episode_count) {
+        randomEpisode -= data[i].published_episode_count;
+      } else {
+        page.redirect(PREFIX+":lang:"+i+":"+randomEpisode);
       }
     }
   }
@@ -182,6 +205,9 @@
     function loadData(order) {
       page.loading = true;
 
+      page.appendItem(PREFIX+':random', 'item', {title: translation[8], icon: plugin.path+'Dice.svg'});
+
+
       // Request latest episode
       var data = JSON.parse(showtime.httpReq("https://api.mtvnn.com/v2/site/z9pce5mcsm/"+language+"/franchises.json").toString());
       for (var i in data) {
@@ -194,13 +220,14 @@
 
           page.appendItem(null, 'separator', {title: translation[6]});
           page.appendItem(PREFIX+":lang:"+data[i].latest_episode.season_number+":"+data[i].latest_episode.number_in_season, "video", {title: title, icon: ImageId(data[i].latest_episode.image.riptide_image_id), description: new showtime.RichText('<font color="FFB000">'+translation[1]+': </font>'+data[i].latest_episode.original_title)});
-          page.appendItem(null, 'separator', {title: translation[7]});
 
           break;
         }
       }
 
-      // Request seasons
+
+      // List seasons
+      page.appendItem(null, 'separator', {title: translation[7]});
       var data = JSON.parse(showtime.httpReq("https://api.mtvnn.com/v2/site/z9pce5mcsm/"+language+"/franchises/471/Shows/seasons.json").toString());
 
       if (order == "desc") {

@@ -26,6 +26,8 @@
       translation.push('Sortierung');
       translation.push('Aufsteigend');
       translation.push('Absteigend');
+      translation.push('Neuste Episode');
+      translation.push('Staffeln');
       break;
     default:
       var translation = new Array();
@@ -35,6 +37,8 @@
       translation.push('Order');
       translation.push('Ascending');
       translation.push('Descending');
+      translation.push('Latest episode');
+      translation.push('Seasons');
   }
 
   plugin.addURI(PREFIX+":main", mainPage);
@@ -177,6 +181,24 @@
 
     function loadData(order) {
       page.loading = true;
+
+      // Request latest episode
+      var data = JSON.parse(showtime.httpReq("https://api.mtvnn.com/v2/site/z9pce5mcsm/"+language+"/franchises.json").toString());
+      for (var i in data) {
+        if (data[i].id == 471) {
+          var title = data[i].latest_episode.local_title;
+          if ((title == "") || (title == null)) {
+            title = data[i].latest_episode.original_title;
+          }
+          title = 's'+data[i].latest_episode.season_number+'e'+data[i].latest_episode.number_in_season+' - '+title;
+
+          page.appendItem(null, 'separator', {title: translation[6]});
+          page.appendItem(PREFIX+":lang:"+data[i].latest_episode.season_number+":"+data[i].latest_episode.number_in_season, "video", {title: title, icon: ImageId(data[i].latest_episode.image.riptide_image_id), description: new showtime.RichText('<font color="FFB000">'+translation[1]+': </font>'+data[i].latest_episode.original_title)});
+          page.appendItem(null, 'separator', {title: translation[7]});
+
+          break;
+        }
+      }
 
       // Request seasons
       var data = JSON.parse(showtime.httpReq("https://api.mtvnn.com/v2/site/z9pce5mcsm/"+language+"/franchises/471/Shows/seasons.json").toString());

@@ -46,7 +46,7 @@
   plugin.addURI(PREFIX+":main", mainPage);
   plugin.addURI(PREFIX+":staffel:(.*)", episodenPage);
   plugin.addURI(PREFIX+":lang:(.*):(.*)", selectLanguage);
-  plugin.addURI(PREFIX+":play:(.*):(.*):(.*)", playEpisode);
+  plugin.addURI(PREFIX+":play:(.*):(.*):(.*):([0-9]+):([0-9]+)", playEpisode);
   plugin.addURI(PREFIX+":random", pickRandom);
   plugin.createService("South Park", PREFIX+":main", "video", true, plugin.path + "southpark.png");
 
@@ -96,14 +96,15 @@
   }
 
   // Plays an episode
-  function playEpisode(page, id, lang, name) {
+  function playEpisode(page, id, lang, name, season, episode) {
     page.type = "video";
 
     var data = JSON.parse(showtime.httpReq("https://api.mtvnn.com/v2/site/z9pce5mcsm/"+lang+"/local_playlists/"+id+".json?video_format=m3u8").toString());
 
     page.source = "videoparams:" + showtime.JSONEncode({
       title: decodeURIComponent(name),
-      canonicalUrl: PREFIX+":play:"+id+":"+lang+":"+name,
+      //canonicalUrl: PREFIX+":play:"+id+":"+lang+":"+name,
+      canonicalUrl: PREFIX+':lang:'+season+':'+episode,
       sources: [{
         url: data.local_playlist_videos[0].url
       }]
@@ -136,7 +137,7 @@
             titel += " "+data[i].local_playlists[i2].local_playlist_context_identifier;
           }
           var dur = GetDuration(data[i].local_playlists[i2].id, data[i].local_playlists[i2].language_code);
-          page.appendItem(PREFIX+":play:"+data[i].local_playlists[i2].id+":"+data[i].local_playlists[i2].language_code+":"+encodeURIComponent(data[i].original_title), "video", {title: titel, duration: dur, icon: ImageId(data[i].image.riptide_image_id), description: new showtime.RichText(descr+'<br><br><br><font color="FFB000">'+translation[1]+': </font>'+data[i].original_title)});
+          page.appendItem(PREFIX+":play:"+data[i].local_playlists[i2].id+":"+data[i].local_playlists[i2].language_code+":"+encodeURIComponent(data[i].original_title)+":"+staffel+":"+episode, "video", {title: titel, duration: dur, icon: ImageId(data[i].image.riptide_image_id), description: new showtime.RichText(descr+'<br><br><br><font color="FFB000">'+translation[1]+': </font>'+data[i].original_title)});
         }
       }
     }

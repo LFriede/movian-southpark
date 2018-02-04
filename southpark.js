@@ -44,7 +44,7 @@
   }
 
   plugin.addURI(PREFIX+":main", mainPage);
-  plugin.addURI(PREFIX+":staffel:(.*)", episodenPage);
+  plugin.addURI(PREFIX+":season:(.*)", episodePage);
   plugin.addURI(PREFIX+":lang:(.*):(.*)", selectLanguage);
   plugin.addURI(PREFIX+":play:(.*):(.*):(.*):([0-9]+):([0-9]+)", playEpisode);
   plugin.addURI(PREFIX+":random", pickRandom);
@@ -112,13 +112,13 @@
   }
 
   // Enumerates the audio languages
-  function selectLanguage(page, staffel, episode) {
+  function selectLanguage(page, season, episode) {
     page.type = "directory";
     page.contents = "items";
     page.loading = true;
     page.metadata.title = translation[2];
 
-    var data = JSON.parse(showtime.httpReq("https://api.mtvnn.com/v2/site/z9pce5mcsm/"+language+"/franchises/471/shows/seasons/"+staffel+"/episodes.json").toString());
+    var data = JSON.parse(showtime.httpReq("https://api.mtvnn.com/v2/site/z9pce5mcsm/"+language+"/franchises/471/shows/seasons/"+season+"/episodes.json").toString());
 
     for (var i in data) {
       if (data[i].number_in_season == episode) {
@@ -128,7 +128,7 @@
         }
         // If the language has no long or short description we will use the english one.
         if ((descr == "") || (descr == null)) {
-          descr = DescriptionFallback(staffel, data[i].number_in_season);
+          descr = DescriptionFallback(season, data[i].number_in_season);
         }
 
         for (var i2 in data[i].local_playlists) {
@@ -137,7 +137,7 @@
             titel += " "+data[i].local_playlists[i2].local_playlist_context_identifier;
           }
           var dur = GetDuration(data[i].local_playlists[i2].id, data[i].local_playlists[i2].language_code);
-          page.appendItem(PREFIX+":play:"+data[i].local_playlists[i2].id+":"+data[i].local_playlists[i2].language_code+":"+encodeURIComponent(data[i].original_title)+":"+staffel+":"+episode, "video", {title: titel, duration: dur, icon: ImageId(data[i].image.riptide_image_id), description: new showtime.RichText(descr+'<br><br><br><font color="FFB000">'+translation[1]+': </font>'+data[i].original_title)});
+          page.appendItem(PREFIX+":play:"+data[i].local_playlists[i2].id+":"+data[i].local_playlists[i2].language_code+":"+encodeURIComponent(data[i].original_title)+":"+season+":"+episode, "video", {title: titel, duration: dur, icon: ImageId(data[i].image.riptide_image_id), description: new showtime.RichText(descr+'<br><br><br><font color="FFB000">'+translation[1]+': </font>'+data[i].original_title)});
         }
       }
     }
@@ -146,15 +146,15 @@
   }
 
   // Enumerate the episodes
-  function episodenPage(page, staffel) {
+  function episodePage(page, season) {
     page.type = "directory";
     page.contents = "items";
-    page.metadata.title = translation[0]+" "+staffel;
+    page.metadata.title = translation[0]+" "+season;
 
     function loadData(order) {
       page.loading = true;
 
-      var data = JSON.parse(showtime.httpReq("https://api.mtvnn.com/v2/site/z9pce5mcsm/"+language+"/franchises/471/shows/seasons/"+staffel+"/episodes.json").toString());
+      var data = JSON.parse(showtime.httpReq("https://api.mtvnn.com/v2/site/z9pce5mcsm/"+language+"/franchises/471/shows/seasons/"+season+"/episodes.json").toString());
 
       var sorted = new Array(data.length);
       for (var i in data) {
@@ -178,10 +178,10 @@
         }
         // If the language has no long or short description we will use the english one.
         if ((descr == "") || (descr == null)) {
-          descr = DescriptionFallback(staffel, sorted[i].number_in_season);
+          descr = DescriptionFallback(season, sorted[i].number_in_season);
         }
         var dur = GetDuration(sorted[i].local_playlists[0].id, sorted[i].local_playlists[0].language_code);
-        page.appendItem(PREFIX+":lang:"+staffel+":"+sorted[i].number_in_season, "video", {title: titel, duration: dur, icon: ImageId(sorted[i].image.riptide_image_id), description: new showtime.RichText(descr+'<br><br><br><font color="FFB000">'+translation[1]+': </font>'+sorted[i].original_title)});
+        page.appendItem(PREFIX+":lang:"+season+":"+sorted[i].number_in_season, "video", {title: titel, duration: dur, icon: ImageId(sorted[i].image.riptide_image_id), description: new showtime.RichText(descr+'<br><br><br><font color="FFB000">'+translation[1]+': </font>'+sorted[i].original_title)});
       }
 
       page.loading = false;
@@ -237,7 +237,7 @@
 
       for (var i in data) {
         if (data[i].published_episode_count>0) {
-          page.appendItem(PREFIX+":staffel:"+data[i].number, "directory", {title: translation[0]+" "+data[i].number});
+          page.appendItem(PREFIX+":season:"+data[i].number, "directory", {title: translation[0]+" "+data[i].number});
         }
       }
 

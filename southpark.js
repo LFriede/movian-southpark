@@ -116,12 +116,18 @@
     page.type = "directory";
     page.contents = "items";
     page.loading = true;
-    page.metadata.title = translation[2];
+    page.metadata.title = translation[2] + ' - s'+('0'+season).slice(-2)+'e'+('0'+episode).slice(-2);
 
     var data = JSON.parse(showtime.httpReq("https://api.mtvnn.com/v2/site/z9pce5mcsm/"+language+"/franchises/471/shows/seasons/"+season+"/episodes.json").toString());
 
     for (var i in data) {
       if (data[i].number_in_season == episode) {
+        var titel = data[i].local_title;
+        if ((titel == "") || (titel == null)) {
+          titel = data[i].original_title;
+        }
+        page.metadata.title += ' '+titel;
+
         var descr = data[i].local_long_description;
         if ((descr == "") || (descr == null)) {
           descr = data[i].local_short_description;
@@ -139,6 +145,8 @@
           var dur = GetDuration(data[i].local_playlists[i2].id, data[i].local_playlists[i2].language_code);
           page.appendItem(PREFIX+":play:"+data[i].local_playlists[i2].id+":"+data[i].local_playlists[i2].language_code+":"+encodeURIComponent(data[i].original_title)+":"+season+":"+episode, "video", {title: titel, duration: dur, icon: ImageId(data[i].image.riptide_image_id), description: new showtime.RichText(descr+'<br><br><br><font color="FFB000">'+translation[1]+': </font>'+data[i].original_title)});
         }
+
+        break;
       }
     }
 

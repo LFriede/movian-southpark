@@ -217,27 +217,47 @@
       page.appendItem(PREFIX+':random', 'item', {title: translation[8], icon: plugin.path+'Dice.svg'});
 
 
-      // Request latest episode
-      var data = JSON.parse(showtime.httpReq("https://api.mtvnn.com/v2/site/z9pce5mcsm/"+language+"/franchises.json").toString());
-      for (var i in data) {
-        if (data[i].id == 471) {
-          var title = data[i].latest_episode.local_title;
-          if ((title == "") || (title == null)) {
-            title = data[i].latest_episode.original_title;
+      // Request latest episode (latest Episode on franchises.json is often wrong, so search it)
+      var data = JSON.parse(showtime.httpReq("https://api.mtvnn.com/v2/site/z9pce5mcsm/"+language+"/franchises/471/Shows/seasons.json").toString());
+
+      try {
+        // Find latest season
+        var maxSeason = 0;
+        for (var i in data) {
+          if (data[i].published_episode_count>0) {
+            if (data[i].number > maxSeason) {
+              maxSeason = data[i].number;
+            }
           }
-          title = 's'+data[i].latest_episode.season_number+'e'+data[i].latest_episode.number_in_season+' - '+title;
-
-          page.appendItem(null, 'separator', {title: translation[6]});
-          page.appendItem(PREFIX+":lang:"+data[i].latest_episode.season_number+":"+data[i].latest_episode.number_in_season, "video", {title: title, icon: ImageId(data[i].latest_episode.image.riptide_image_id), description: new showtime.RichText('<font color="FFB000">'+translation[1]+': </font>'+data[i].latest_episode.original_title)});
-
-          break;
         }
+
+        // Find latest episode in latest season
+        var eData = JSON.parse(showtime.httpReq("https://api.mtvnn.com/v2/site/z9pce5mcsm/"+language+"/franchises/471/shows/seasons/"+maxSeason+"/episodes.json").toString());
+        var maxEpisode = 0;
+        var latestEpisodeData = null;
+        for (var i in eData) {
+          if (eData[i].number_in_season > maxEpisode) {
+            maxEpisode = eData[i].number_in_season;
+            latestEpisodeData = eData[i];
+          }
+        }
+
+        // Show latest episode
+        var title = latestEpisodeData.local_title;
+        if ((title == "") || (title == null)) {
+          title = latestEpisodeData.original_title;
+        }
+        title = 's'+maxSeason+'e'+latestEpisodeData.number_in_season+' - '+title;
+
+        page.appendItem(null, 'separator', {title: translation[6]});
+        page.appendItem(PREFIX+":lang:"+maxSeason+":"+latestEpisodeData.number_in_season, "video", {title: title, icon: ImageId(latestEpisodeData.image.riptide_image_id), description: new showtime.RichText('<font color="FFB000">'+translation[1]+': </font>'+latestEpisodeData.original_title)});
+      } catch (e) {
+        print(e);
       }
 
 
       // List seasons
       page.appendItem(null, 'separator', {title: translation[7]});
-      var data = JSON.parse(showtime.httpReq("https://api.mtvnn.com/v2/site/z9pce5mcsm/"+language+"/franchises/471/Shows/seasons.json").toString());
 
       if (order == "desc") {
         data = data.reverse();

@@ -214,7 +214,7 @@
     function loadData(order) {
       page.loading = true;
 
-      page.appendItem(PREFIX+':random', 'item', {title: translation[8], icon: plugin.path+'Dice.svg'});
+      page.appendItem(PREFIX+':random', 'item', {title: translation[8], icon: 'dataroot://res/svg/Shuffle.svg'});
 
 
       // Request latest episode (latest Episode on franchises.json is often wrong, so search it)

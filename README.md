@@ -17,3 +17,7 @@ This plugin is available via the official plugin source, so just start Movian an
 However, if you want to install the plugin manually just "play" the zip file with Movian and it will be installed.
 
 If you are developing it's easier to use the -p command line argument of Movian followed by the path of the folder containing the plugin data.
+
+
+## Credits
+ - Dice icon by [visualpharm.com](https://visualpharm.com)
